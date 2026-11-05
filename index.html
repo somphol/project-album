@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Project Album — somphol</title>
+<style>
+  :root{
+    --bg:#08090d; --panel:#101218; --line:#232733; --ink:#eef0f6; --dim:#98a0b4;
+    --a:#7c8cff; --b:#45e0c8; --c:#ff7ab8;
+    --r:18px; --pad:clamp(16px,3vw,40px);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;background:
+      radial-gradient(1200px 700px at 12% -10%, #1b2050 0%, transparent 60%),
+      radial-gradient(900px 600px at 105% 10%, #103b38 0%, transparent 55%),
+      var(--bg);
+    color:var(--ink);font:15px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Inter,sans-serif;
+    -webkit-font-smoothing:antialiased;overflow:hidden;
+  }
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  a{color:inherit;text-decoration:none}
+
+  /* ---------- shell ---------- */
+  .app{height:100dvh;display:grid;grid-template-rows:auto 1fr auto}
+  header{display:flex;align-items:center;gap:14px;padding:14px var(--pad);border-bottom:1px solid #ffffff0d}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:650;letter-spacing:.2px}
+  .brand i{width:9px;height:9px;border-radius:50%;background:linear-gradient(135deg,var(--a),var(--b));box-shadow:0 0 14px #7c8cffcc}
+  .count{color:var(--dim);font-weight:500;font-size:13px;padding-left:2px}
+  header .spacer{flex:1}
+  .chip{display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border:1px solid var(--line);border-radius:999px;color:var(--dim);font-size:13px;transition:.18s}
+  .chip:hover{color:var(--ink);border-color:#3a4152;background:#ffffff08}
+  .chip.on{color:#0a0b12;background:linear-gradient(135deg,var(--b),#8ff5e5);border-color:transparent;font-weight:600}
+  .seg{display:flex;gap:4px;padding:3px;border:1px solid var(--line);border-radius:999px;background:#ffffff05}
+  .seg button{padding:6px 14px;border-radius:999px;font-size:13px;color:var(--dim)}
+  .seg button.on{background:#ffffff12;color:var(--ink)}
+
+  /* ---------- slides ---------- */
+  .slides{display:grid;grid-template-columns:1fr 380px;min-height:0;position:relative}
+  @media (max-width:900px){.slides{grid-template-columns:1fr;grid-template-rows:1fr auto}}
+  .stage{position:relative;display:flex;align-items:center;justify-content:center;padding:var(--pad);min-height:0}
+  .shot{position:relative;width:100%;height:100%;max-height:100%;border-radius:var(--r);overflow:hidden;
+        background:#0c0e14;border:1px solid #ffffff14;box-shadow:0 30px 80px -30px #000,inset 0 1px 0 #ffffff10}
+  .shot img{width:100%;height:100%;object-fit:contain;object-position:center;display:block;background:#05060a}
+  .shot.cover img{object-fit:cover}
+  .shot .empty{position:absolute;inset:0;display:grid;place-items:center;color:var(--dim);font-size:13px}
+
+  .info{display:flex;flex-direction:column;justify-content:center;gap:14px;padding:var(--pad) var(--pad) var(--pad) 0;min-height:0;overflow:auto}
+  @media (max-width:900px){.info{padding:0 var(--pad) var(--pad)}}
+  .tags{display:flex;flex-wrap:wrap;gap:6px}
+  .tag{font-size:11px;letter-spacing:.09em;text-transform:uppercase;padding:4px 9px;border-radius:999px;
+       border:1px solid #ffffff1f;color:#c7cde0;background:#ffffff08}
+  .info h1{margin:0;font-size:clamp(24px,3vw,38px);line-height:1.1;letter-spacing:-.02em;font-weight:700}
+  .info p{margin:0;color:var(--dim);font-size:14.5px;max-width:46ch}
+  .links{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:12px;border:1px solid var(--line);
+       font-weight:600;font-size:14px;transition:.18s;background:#ffffff06}
+  .btn:hover{background:#ffffff10;border-color:#3d4456;transform:translateY(-1px)}
+  .btn.primary{background:linear-gradient(135deg,var(--a),#a6b0ff);color:#0a0b14;border:0;box-shadow:0 12px 30px -12px #7c8cff99}
+  .btn.primary:hover{filter:brightness(1.07)}
+  .btn.off{opacity:.45;pointer-events:none}
+  .meta{display:flex;flex-wrap:wrap;gap:14px;color:#78819a;font-size:12px;margin-top:6px;font-variant-numeric:tabular-nums}
+  .meta b{color:#b9c0d4;font-weight:600}
+
+  .arrow{position:absolute;bottom:18px;width:46px;height:46px;border-radius:50%;
+         display:grid;place-items:center;background:#0b0d13cc;border:1px solid #ffffff1f;backdrop-filter:blur(10px);
+         font-size:22px;color:#dfe3ee;transition:.18s;z-index:5}
+  .arrow:hover{background:#1a1e2acc;transform:translateY(-1px) scale(1.04)}
+  .arrow.prev{left:calc(50% - 52px)}
+  .arrow.next{left:calc(50% + 6px)}
+
+  /* ---------- filmstrip ---------- */
+  .film{grid-column:1/-1;display:flex;gap:10px;overflow-x:auto;padding:10px var(--pad) 16px;scrollbar-width:thin;
+        border-top:1px solid #ffffff0d;background:#07081066}
+  .film::-webkit-scrollbar{height:6px}
+  .film::-webkit-scrollbar-thumb{background:#2a3040;border-radius:3px}
+  .th{position:relative;flex:0 0 auto;width:104px;aspect-ratio:16/10;border-radius:9px;overflow:hidden;
+      border:1px solid #ffffff12;opacity:.5;transition:.2s;background:#0c0e14}
+  .th img{width:100%;height:100%;object-fit:cover;display:block}
+  .th:hover{opacity:.85}
+  .th.on{opacity:1;border-color:var(--b);box-shadow:0 0 0 1px var(--b),0 8px 22px -10px var(--b)}
+
+  /* ---------- grid ---------- */
+  .gridwrap{overflow:auto;padding:0 var(--pad) var(--pad)}
+  .bar{position:sticky;top:0;z-index:3;display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+       padding:16px 0 14px;background:linear-gradient(#08090df2,#08090dee 70%,transparent);backdrop-filter:blur(6px)}
+  .search{flex:1;min-width:220px;display:flex;align-items:center;gap:9px;padding:10px 14px;border:1px solid var(--line);
+          border-radius:12px;background:#0d0f16}
+  .search input{flex:1;background:none;border:0;outline:0;color:var(--ink);font:inherit}
+  .search input::placeholder{color:#6d7590}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;padding-bottom:24px}
+  .card{position:relative;border:1px solid #ffffff12;border-radius:16px;overflow:hidden;background:#0c0e14;
+        display:flex;flex-direction:column;transition:.22s}
+  .card:hover{transform:translateY(-3px);border-color:#3a4256;box-shadow:0 24px 50px -28px #000}
+  .card .cover{aspect-ratio:16/10;overflow:hidden;background:#070810;position:relative}
+  .card .cover img{width:100%;height:100%;object-fit:cover;transition:.5s}
+  .card:hover .cover img{transform:scale(1.04)}
+  .card .body{padding:14px 15px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .card h3{margin:0;font-size:15.5px;letter-spacing:-.01em;line-height:1.25}
+  .card p{margin:0;color:var(--dim);font-size:12.8px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .card .row{margin-top:auto;display:flex;gap:8px;align-items:center;padding-top:6px}
+  .card .row a{padding:7px 11px;border-radius:9px;font-size:12px;font-weight:600;border:1px solid var(--line);color:#cdd3e4}
+  .card .row a:hover{background:#ffffff0e}
+  .card .row a.p{background:linear-gradient(135deg,var(--a),#a6b0ff);color:#0a0b14;border:0}
+  .card .row a.d{opacity:.4;pointer-events:none}
+  .badge{position:absolute;top:10px;left:10px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+         padding:4px 8px;border-radius:999px;background:#080a10cc;border:1px solid #ffffff1f;backdrop-filter:blur(8px);color:#cfd5e6}
+
+  /* ---------- footer ---------- */
+  footer{display:flex;align-items:center;gap:16px;padding:9px var(--pad);border-top:1px solid #ffffff0d;
+         color:#6d7590;font-size:12px;background:#06070b99}
+  footer .prog{flex:1;height:3px;border-radius:2px;background:#ffffff12;overflow:hidden;max-width:420px}
+  footer .prog i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--b),var(--a));transition:width .35s}
+  kbd{font:11px/1 ui-monospace,monospace;padding:3px 6px;border:1px solid #ffffff1f;border-bottom-width:2px;border-radius:5px;color:#b7bed2}
+  [hidden]{display:none!important}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand"><i></i> Project Album <span class="count" id="count"></span></div>
+    <div class="spacer"></div>
+    <button class="chip" id="auto">▶ Autoplay</button>
+    <button class="chip" id="full">⛶ Fullscreen</button>
+    <div class="seg">
+      <button data-mode="slides" class="on">Slides</button>
+      <button data-mode="grid">Grid</button>
+    </div>
+  </header>
+
+  <section class="slides" id="slidesView">
+    <div class="stage">
+      <button class="arrow prev" id="prev" aria-label="Previous">‹</button>
+      <button class="arrow next" id="next" aria-label="Next">›</button>
+      <div class="shot" id="shot">
+        <img id="shotImg" alt="">
+        <div class="empty" id="shotEmpty" hidden>No screenshot yet</div>
+      </div>
+    </div>
+    <div class="info">
+      <div class="tags" id="tags"></div>
+      <h1 id="title"></h1>
+      <p id="desc"></p>
+      <div class="links">
+        <a class="btn primary" id="demoLink" target="_blank" rel="noopener">Live Demo ↗</a>
+        <a class="btn" id="ghLink" target="_blank" rel="noopener">GitHub →</a>
+      </div>
+      <div class="meta">
+        <span id="metaLang"></span>
+        <span id="metaDate"></span>
+        <span id="metaPos"></span>
+      </div>
+    </div>
+    <div class="film" id="film"></div>
+  </section>
+
+  <section class="gridwrap" id="gridView" hidden>
+    <div class="bar">
+      <label class="search">⌕ <input id="q" placeholder="Filter by name, tag or keyword…"></label>
+      <div id="tagFilters" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <footer>
+    <span id="footInfo"></span>
+    <div class="prog"><i id="prog"></i></div>
+    <span><kbd>←</kbd><kbd>→</kbd> browse · <kbd>G</kbd> grid · <kbd>F</kbd> full · <kbd>Space</kbd> autoplay</span>
+  </footer>
+</div>
+
+<script>
+const PROJECTS = [{"id":"full-3d-15-puzzle-studio","name":"Full 3D 15-Puzzle Studio","desc":"A tactile 3D 15-puzzle with an A* auto-solver, bilingual EN/TH UI, synthesized audio and zero backend.","tags":["Game","Studio"],"github":"https://github.com/somphol/full-3d-15-puzzle-studio","demo":"https://somphol.github.io/full-3d-15-puzzle-studio/","demoLive":true,"homepage":"https://somphol.github.io/full-3d-15-puzzle-studio/","lang":"JavaScript","pushed":"2026-11-05","image":"img/full-3d-15-puzzle-studio.jpg","py":1600},{"id":"full-3d-lucky-draw-studio","name":"Full 3D Lucky Draw Studio","desc":"Full 3D lucky draw and prize wheel studio: cryptographically fair pick, Three.js wheel, bilingual UI, local history, JSON/CSV export.","tags":["Studio"],"github":"https://github.com/somphol/full-3d-lucky-draw-studio","demo":"https://somphol.github.io/full-3d-lucky-draw-studio/","demoLive":true,"homepage":"https://somphol.github.io/full-3d-lucky-draw-studio/","lang":"JavaScript","pushed":"2026-11-05","image":"img/full-3d-lucky-draw-studio.jpg","py":1600},{"id":"leab-tui-3d","name":"Leab-Tui 3D","desc":"Leab-Tui 3D — a bilingual, interactive 3D studio for the Thai Xiangqi trick-taking game เลี๊ยบตุ่ย.","tags":["Game"],"github":"https://github.com/somphol/leab-tui-3d","demo":"https://somphol.github.io/leab-tui-3d/","demoLive":true,"homepage":"https://somphol.github.io/leab-tui-3d/","lang":"JavaScript","pushed":"2026-11-05","image":"img/leab-tui-3d.jpg","py":1440},{"id":"opencode-skills","name":"OpenCode Skills","desc":"HTTP skill catalog for OpenCode: city-miniature, session-export, session-to-skill, skill-publish","tags":["Studio"],"github":"https://github.com/somphol/opencode-skills","demo":"https://somphol.github.io/opencode-skills/","demoLive":true,"homepage":"https://somphol.github.io/opencode-skills/","lang":"HTML","pushed":"2026-11-05","image":"img/opencode-skills.jpg","py":1600},{"id":"3d-trigonometry-master-booklet","name":"3D Trigonometry Master Booklet","desc":"TrigLab 3D — a 20-tab interactive 3D trigonometry master booklet with engineering simulators, generative drills, and a portable spaced-repetition system.","tags":["Learning"],"github":"https://github.com/somphol/3d-trigonometry-master-booklet","demo":"https://somphol.github.io/3d-trigonometry-master-booklet/","demoLive":true,"homepage":"https://somphol.github.io/3d-trigonometry-master-booklet/","lang":"JavaScript","pushed":"2026-11-04","image":"img/3d-trigonometry-master-booklet.jpg","py":1600},{"id":"calculator","name":"Calculator","desc":"A modern glassmorphism scientific calculator in a single self-contained HTML file.","tags":["Learning"],"github":"https://github.com/somphol/calculator","demo":"https://somphol.github.io/calculator/","demoLive":true,"homepage":"https://somphol.github.io/calculator/","lang":"HTML","pushed":"2026-11-04","image":"img/calculator.jpg","py":1400},{"id":"classic_pong","name":"Classic_pong","desc":"A single-file neon Pong game built with HTML5 Canvas and vanilla JavaScript.","tags":["Game"],"github":"https://github.com/somphol/classic_pong","demo":"https://somphol.github.io/classic_pong/","demoLive":true,"homepage":"https://somphol.github.io/classic_pong/","lang":"HTML","pushed":"2026-11-04","image":"img/classic_pong.jpg","py":1280},{"id":"makruk-3d","name":"Makruk 3D","desc":"Makruk 3D — Authentic Thai Chess Academy & Beginner Studio with procedural Three.js pieces, bilingual coaching, AI and pass-and-play.","tags":["Game"],"github":"https://github.com/somphol/makruk-3d","demo":"https://somphol.github.io/makruk-3d/","demoLive":true,"homepage":"https://somphol.github.io/makruk-3d/","lang":"JavaScript","pushed":"2026-11-04","image":"img/makruk-3d.jpg","py":2880},{"id":"nexus-2035-house-tour","name":"Nexus 2035 House Tour","desc":"Nexus 2035: Futuristic 4BR House Tour Studio — interactive Three.js architectural walkthrough with circadian lighting, smart glass, walk mode, and exportable tour states.","tags":["3D World"],"github":"https://github.com/somphol/nexus-2035-house-tour","demo":"https://somphol.github.io/nexus-2035-house-tour/","demoLive":true,"homepage":"https://somphol.github.io/nexus-2035-house-tour/","lang":"JavaScript","pushed":"2026-11-04","image":"img/nexus-2035-house-tour.jpg","py":1440},{"id":"snooker-3d","name":"Snooker 3D","desc":"The Mahogany Room — a complete 22-ball 3D snooker game with Three.js physics, spin, a referee, AI and portable career stats.","tags":["Game"],"github":"https://github.com/somphol/snooker-3d","demo":"https://somphol.github.io/snooker-3d/","demoLive":true,"homepage":"https://somphol.github.io/snooker-3d/","lang":"JavaScript","pushed":"2026-11-04","image":"img/snooker-3d.jpg","py":1600},{"id":"texas-holdem-3d","name":"Texas Holdem 3D","desc":"Night Shift 3D — a cinematic Three.js Texas Hold'em table with Monte Carlo AI, 3D cards and chips, side pots, and a dark casino theme.","tags":[],"github":"https://github.com/somphol/texas-holdem-3d","demo":"https://somphol.github.io/texas-holdem-3d/","demoLive":true,"homepage":"https://somphol.github.io/texas-holdem-3d/","lang":"JavaScript","pushed":"2026-11-04","image":"img/texas-holdem-3d.jpg","py":1800},{"id":"texas-holdem-poker","name":"Texas Holdem Poker","desc":"Night Shift — a sleek single-file Texas Hold'em game with Monte Carlo AI, side pots, and a dark casino theme.","tags":["Game"],"github":"https://github.com/somphol/texas-holdem-poker","demo":"https://somphol.github.io/texas-holdem-poker/","demoLive":true,"homepage":"https://somphol.github.io/texas-holdem-poker/","lang":"HTML","pushed":"2026-11-04","image":"img/texas-holdem-poker.jpg","py":1800},{"id":"tramtracker-2088","name":"TramTracker 2088","desc":"TramTracker 2088: Melbourne Yarra Trams 3D Simulator — a vanilla Three.js + Cannon.js cyber tram game with Myki boarding, hook turns and four seasons in one day.","tags":["3D World"],"github":"https://github.com/somphol/tramtracker-2088","demo":"https://somphol.github.io/tramtracker-2088/","demoLive":true,"homepage":"https://somphol.github.io/tramtracker-2088/","lang":"JavaScript","pushed":"2026-11-04","image":"img/tramtracker-2088.jpg","py":1600},{"id":"us-map-jigsaw-3d","name":"US Map Jigsaw 3D","desc":"An interactive 3D United States map & capitals jigsaw in a single self-contained HTML file, built with Three.js.","tags":["Game"],"github":"https://github.com/somphol/us-map-jigsaw-3d","demo":"https://somphol.github.io/us-map-jigsaw-3d/","demoLive":true,"homepage":"https://somphol.github.io/us-map-jigsaw-3d/","lang":"HTML","pushed":"2026-11-04","image":"img/us-map-jigsaw-3d.jpg","py":1440},{"id":"virtual-playhouse","name":"Virtual Playhouse","desc":"The Virtual Playhouse: AI Classic Theatre & Audience Simulator — a 2.5D proscenium stage, procedural actors, Web Audio crowd and a DeepSeek-ready JSON script engine.","tags":["Game","3D World"],"github":"https://github.com/somphol/virtual-playhouse","demo":"https://somphol.github.io/virtual-playhouse/","demoLive":true,"homepage":"https://somphol.github.io/virtual-playhouse/","lang":"JavaScript","pushed":"2026-11-04","image":"img/virtual-playhouse.jpg","py":1600},{"id":"voa-newsroom-esl-studio","name":"VOA Newsroom ESL Studio","desc":"VOA Newsroom: 500 Words ESL Studio — a browser-native ESL vocabulary trainer with SRS, live VOA headlines, speech practice, and five learning desks.","tags":["Learning","Studio"],"github":"https://github.com/somphol/voa-newsroom-esl-studio","demo":"https://somphol.github.io/voa-newsroom-esl-studio/","demoLive":true,"homepage":"https://somphol.github.io/voa-newsroom-esl-studio/","lang":"JavaScript","pushed":"2026-11-04","image":"img/voa-newsroom-esl-studio.jpg","py":1600},{"id":"wat-arun-3d","name":"Wat Arun 3D","desc":"Interactive 3D walkthrough of Wat Arun (Temple of Dawn), Bangkok — first-person and drone navigation, bilingual EN/TH hotspots, procedural Three.js architecture, Web Audio ambience and a savable tour journal.","tags":["3D World"],"github":"https://github.com/somphol/wat-arun-3d","demo":"https://somphol.github.io/wat-arun-3d/","demoLive":true,"homepage":"https://somphol.github.io/wat-arun-3d/","lang":"JavaScript","pushed":"2026-11-04","image":"img/wat-arun-3d.jpg","py":1600},{"id":"word-practice","name":"Word Practice","desc":"A friendly, browser-native ESL pronunciation coach with 80 words, 4 sound groups, and instant speech feedback.","tags":["Learning"],"github":"https://github.com/somphol/word-practice","demo":"https://somphol.github.io/word-practice/","demoLive":true,"homepage":"https://somphol.github.io/word-practice/","lang":"CSS","pushed":"2026-11-04","image":"img/word-practice.jpg","py":1440},{"id":"worldclock","name":"Worldclock","desc":"A real-time world clock dashboard in a single HTML file — analog + digital clocks, time-zone search, and light/dark themes.","tags":["3D World"],"github":"https://github.com/somphol/worldclock","demo":"https://somphol.github.io/worldclock/","demoLive":true,"homepage":"https://somphol.github.io/worldclock/","lang":"HTML","pushed":"2026-11-04","image":"img/worldclock.jpg","py":2880},{"id":"bangkok-3d-tour-guide","name":"Bangkok 3D Tour Guide","desc":"Bangkok 3D — Interactive Urban Tourist Guide & Explorer Studio: a bilingual Three.js miniature with drone, street-walk and river-tour modes.","tags":["3D World"],"github":"https://github.com/somphol/bangkok-3d-tour-guide","demo":"https://somphol.github.io/bangkok-3d-tour-guide/","demoLive":true,"homepage":"https://somphol.github.io/bangkok-3d-tour-guide/","lang":"JavaScript","pushed":"2026-11-03","image":"img/bangkok-3d-tour-guide.jpg","py":1600},{"id":"brickstep-3d-pro","name":"Brickstep 3D Pro","desc":"BrickStep 3D Pro — a 250-piece LEGO assembly studio with step-by-step 3D instructions, ghost snapping, explode view, and a JSON authoring studio.","tags":["Game"],"github":"https://github.com/somphol/brickstep-3d-pro","demo":"https://somphol.github.io/brickstep-3d-pro/","demoLive":true,"homepage":"https://somphol.github.io/brickstep-3d-pro/","lang":"JavaScript","pushed":"2026-11-03","image":"img/brickstep-3d-pro.jpg","py":1600},{"id":"bts-sukhumvit-line-3d","name":"BTS Sukhumvit Line 3D","desc":"BTS Sukhumvit Line 3D — Authentic Bangkok City & Driver Simulator. 47-station Three.js Bangkok Skytrain simulator with bilingual HUD, auto pilot and four cameras.","tags":["3D World"],"github":"https://github.com/somphol/bts-sukhumvit-line-3d","demo":"https://somphol.github.io/bts-sukhumvit-line-3d/","demoLive":true,"homepage":"https://somphol.github.io/bts-sukhumvit-line-3d/","lang":"JavaScript","pushed":"2026-11-03","image":"img/bts-sukhumvit-line-3d.jpg","py":1600},{"id":"city-miniature","name":"City Miniature","desc":"OpenCode skill: build an interactive 3D miniature of a city as one offline HTML file. Ships a working San Francisco diorama template.","tags":["3D World"],"github":"https://github.com/somphol/city-miniature","demo":"https://somphol.github.io/san-francisco-miniature/","demoLive":true,"homepage":"https://somphol.github.io/san-francisco-miniature/","lang":"HTML","pushed":"2026-11-03","image":"img/city-miniature.jpg","py":1600},{"id":"cyberdoom-retro-fps","name":"Cyberdoom Retro Fps","desc":"CYBERDOOM — Retro 3D First-Person Shooter Studio. A complete 100% client-side FPS in vanilla HTML/CSS/ES6 + Three.js r128.","tags":["Game"],"github":"https://github.com/somphol/cyberdoom-retro-fps","demo":"https://somphol.github.io/cyberdoom-retro-fps/","demoLive":true,"homepage":"https://somphol.github.io/cyberdoom-retro-fps/","lang":"JavaScript","pushed":"2026-11-03","image":"img/cyberdoom-retro-fps.jpg","py":1600},{"id":"flappy-bird-3d","name":"Flappy Bird 3D","desc":"A polished 3D Flappy Bird game in a single self-contained HTML file, built with Three.js.","tags":["Game"],"github":"https://github.com/somphol/flappy-bird-3d","demo":"https://somphol.github.io/flappy-bird-3d/","demoLive":true,"homepage":"https://somphol.github.io/flappy-bird-3d/","lang":"HTML","pushed":"2026-11-03","image":"img/flappy-bird-3d.jpg","py":1440},{"id":"full-3d-chess-academy","name":"Full 3D Chess Academy","desc":"Bilingual 3D chess academy and studio: play standard chess, inspect pieces, learn with a coach, and drill tactics. Vanilla JS + Three.js.","tags":["Game"],"github":"https://github.com/somphol/full-3d-chess-academy","demo":"https://somphol.github.io/full-3d-chess-academy/","demoLive":true,"homepage":"https://somphol.github.io/full-3d-chess-academy/","lang":"JavaScript","pushed":"2026-11-03","image":"img/full-3d-chess-academy.jpg","py":1280},{"id":"gutenberg-reader-studio","name":"Gutenberg Reader Studio","desc":"Gutenberg Reader Studio & Vocabulary Lab — a local-first reading room for 75,000+ public-domain classics with bionic reading, RSVP speed reading, ambient sound, and a spaced-repetition word bank.","tags":["Learning","Studio"],"github":"https://github.com/somphol/gutenberg-reader-studio","demo":"https://somphol.github.io/gutenberg-reader-studio/","demoLive":true,"homepage":"https://somphol.github.io/gutenberg-reader-studio/","lang":"JavaScript","pushed":"2026-11-03","image":"img/gutenberg-reader-studio.jpg","py":1440},{"id":"hearth-and-home-3d","name":"Hearth and Home 3D","desc":"Hearth & Home 3D — a cozy fireplace and study sanctuary built with Three.js, procedural fire, synthesized Web Audio crackle, and a Pomodoro timer.","tags":["3D World"],"github":"https://github.com/somphol/hearth-and-home-3d","demo":"https://somphol.github.io/hearth-and-home-3d/","demoLive":true,"homepage":"https://somphol.github.io/hearth-and-home-3d/","lang":"JavaScript","pushed":"2026-11-03","image":"img/hearth-and-home-3d.jpg","py":1280},{"id":"isometric-chess-academy","name":"Isometric Chess Academy","desc":"A bilingual 2.5D isometric chess academy: full international rules, piece inspector, blunder guard, five puzzle drills, synthesized audio, offline progress.","tags":["Game"],"github":"https://github.com/somphol/isometric-chess-academy","demo":"https://somphol.github.io/isometric-chess-academy/","demoLive":true,"homepage":"https://somphol.github.io/isometric-chess-academy/","lang":"JavaScript","pushed":"2026-11-03","image":"img/isometric-chess-academy.jpg","py":1440},{"id":"khan-trig-unit1-right-triangle-studio","name":"Khan Trig · Unit 1 — Right Triangles","desc":"Bilingual interactive companion for Khan Academy Trigonometry Unit 1: ratio constancy, special triangles, reciprocal ratios and practice. Vanilla HTML/CSS/JS, offline, GitHub Pages.","tags":["Learning","Studio"],"github":"https://github.com/somphol/khan-trig-unit1-right-triangle-studio","demo":"https://somphol.github.io/khan-trig-unit1-right-triangle-studio/","demoLive":true,"homepage":"https://somphol.github.io/khan-trig-unit1-right-triangle-studio/","lang":"JavaScript","pushed":"2026-11-03","image":"img/khan-trig-unit1-right-triangle-studio.jpg","py":1440},{"id":"khan-trig-unit2-trigonometric-functions-studio","name":"Khan Trig · Unit 2 — Trigonometric Functions","desc":"Bilingual interactive companion for Khan Academy Trigonometry Unit 2: unit circle, radians, sinusoidal transformations and exact-value quiz. Vanilla HTML/CSS/JS, offline, GitHub Pages.","tags":["Learning","Studio"],"github":"https://github.com/somphol/khan-trig-unit2-trigonometric-functions-studio","demo":"https://somphol.github.io/khan-trig-unit2-trigonometric-functions-studio/","demoLive":true,"homepage":"https://somphol.github.io/khan-trig-unit2-trigonometric-functions-studio/","lang":"JavaScript","pushed":"2026-11-03","image":"img/khan-trig-unit2-trigonometric-functions-studio.jpg","py":1440},{"id":"khan-trig-unit3-non-right-triangles-studio","name":"Khan Trig · Unit 3 — Non-Right Triangles","desc":"Bilingual interactive companion for Khan Academy Trigonometry Unit 3: Law of Sines, ambiguous SSA, Law of Cosines and surveying practice. Vanilla HTML/CSS/JS, offline, GitHub Pages.","tags":["Learning","Studio"],"github":"https://github.com/somphol/khan-trig-unit3-non-right-triangles-studio","demo":"https://somphol.github.io/khan-trig-unit3-non-right-triangles-studio/","demoLive":true,"homepage":"https://somphol.github.io/khan-trig-unit3-non-right-triangles-studio/","lang":"JavaScript","pushed":"2026-11-03","image":"img/khan-trig-unit3-non-right-triangles-studio.jpg","py":1440},{"id":"khan-trig-unit4-equations-identities-studio","name":"Khan Trig · Unit 4 — Equations & Identities","desc":"Bilingual interactive companion for Khan Academy Trigonometry Unit 4: inverse functions, restricted domains, Pythagorean identities and equation solving. Vanilla HTML/CSS/JS, offline, GitHub Pages.","tags":["Learning","Studio"],"github":"https://github.com/somphol/khan-trig-unit4-equations-identities-studio","demo":"https://somphol.github.io/khan-trig-unit4-equations-identities-studio/","demoLive":true,"homepage":"https://somphol.github.io/khan-trig-unit4-equations-identities-studio/","lang":"JavaScript","pushed":"2026-11-03","image":"img/khan-trig-unit4-equations-identities-studio.jpg","py":1440},{"id":"neon-horizon-2088","name":"Neon Horizon 2088","desc":"NEON HORIZON 2088 — Cyberpunk 3D Pinball Studio. Vanilla JS, Three.js r128, Cannon.js 0.6.2, synthesised audio and a portable score archive.","tags":["3D World"],"github":"https://github.com/somphol/neon-horizon-2088","demo":"https://somphol.github.io/neon-horizon-2088/","demoLive":true,"homepage":"https://somphol.github.io/neon-horizon-2088/","lang":"JavaScript","pushed":"2026-11-03","image":"img/neon-horizon-2088.jpg","py":1600},{"id":"rubiks-cube","name":"Rubiks Cube","desc":"CubeLab — a polished single-file 3D Rubik's Cube simulator with drag-to-turn controls and a Kociemba two-phase solver.","tags":["Game"],"github":"https://github.com/somphol/rubiks-cube","demo":"https://somphol.github.io/rubiks-cube/","demoLive":true,"homepage":"https://somphol.github.io/rubiks-cube/","lang":"HTML","pushed":"2026-11-03","image":"img/rubiks-cube.jpg","py":1440},{"id":"millionaire-race-2.5d","name":"Millionaire Race 2.5D","desc":"Millionaire Race 2.5D — Wealth & Asset Tycoon Studio. A vanilla HTML5/CSS3/ES6 board game with a 2.5D Canvas board, Three.js + Cannon.js physics dice, AI rivals, Web Audio and JSON persistence.","tags":["Game"],"github":"https://github.com/somphol/millionaire-race-2.5d","demo":"https://somphol.github.io/millionaire-race-2.5d/","demoLive":true,"homepage":"https://somphol.github.io/millionaire-race-2.5d/","lang":"JavaScript","pushed":"2026-11-02","image":"img/millionaire-race-2.5d.jpg","py":1920},{"id":"klondike-solitaire","name":"Klondike Solitaire","desc":"A complete, polished Klondike Solitaire game in a single self-contained HTML file.","tags":["Game"],"github":"https://github.com/somphol/klondike-solitaire","demo":"https://somphol.github.io/klondike-solitaire/","demoLive":true,"homepage":"","lang":"HTML","pushed":"2026-11-01","image":"img/klondike-solitaire.jpg","py":1440},{"id":"oceancraft-3d","name":"Oceancraft 3D","desc":"OceanCraft 3D — Deep Sea Fishing & Hydrodynamics Studio. Vanilla HTML/CSS/ES6 + Three.js r128.","tags":["3D World"],"github":"https://github.com/somphol/oceancraft-3d","demo":"https://somphol.github.io/oceancraft-3d/","demoLive":true,"homepage":"https://somphol.github.io/oceancraft-3d/","lang":"JavaScript","pushed":"2026-11-01","image":"img/oceancraft-3d.jpg","py":1600},{"id":"sky-and-sea-3d","name":"Sky and Sea 3D","desc":"Sky & Sea 3D — an ambient study sanctuary with procedural oceans, cloud islands, synthesized soundscapes, Pomodoro focus and portable study logs.","tags":["3D World"],"github":"https://github.com/somphol/sky-and-sea-3d","demo":"https://somphol.github.io/sky-and-sea-3d/","demoLive":true,"homepage":"https://somphol.github.io/sky-and-sea-3d/","lang":"JavaScript","pushed":"2026-11-01","image":"img/sky-and-sea-3d.jpg","py":1440}];
+const $ = (id) => document.getElementById(id);
+let i = 0, mode = 'slides', auto = null, filter = { q: '', tag: null };
+
+const pad = (n) => String(n).padStart(2, '0');
+
+/* ---------------- slides ---------------- */
+function render() {
+  const p = PROJECTS[i];
+  if (!p) return;
+  $('shotImg').src = p.image || '';
+  $('shotImg').alt = p.name;
+  $('shotEmpty').hidden = !!p.image;
+  $('shotImg').hidden = !p.image;
+  $('shot').classList.toggle('cover', false);
+  $('title').textContent = p.name;
+  $('desc').textContent = p.desc;
+  $('tags').innerHTML = (p.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
+  $('demoLink').href = p.demo;
+  $('demoLink').classList.toggle('off', !p.demoLive);
+  $('demoLink').textContent = p.demoLive ? 'Live Demo ↗' : 'Demo unavailable';
+  $('ghLink').href = p.github;
+  $('metaLang').innerHTML = p.lang ? `<b>${p.lang}</b>` : '';
+  $('metaDate').innerHTML = p.pushed ? `updated <b>${p.pushed}</b>` : '';
+  $('metaPos').innerHTML = `<b>${pad(i + 1)}</b> / ${pad(PROJECTS.length)}`;
+  $('prog').style.width = ((i + 1) / PROJECTS.length * 100) + '%';
+  [...$('film').children].forEach((el, k) => el.classList.toggle('on', k === i));
+  const on = $('film').children[i];
+  if (on && mode === 'slides') on.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+}
+
+function go(d) {
+  i = (i + d + PROJECTS.length) % PROJECTS.length;
+  render();
+}
+function jump(k) { i = k; render(); }
+
+/* ---------------- filmstrip ---------------- */
+$('film').innerHTML = PROJECTS.map((p, k) =>
+  `<button class="th" data-k="${k}" title="${p.name}">${p.image ? `<img src="${p.image}" alt="" loading="lazy">` : ''}</button>`
+).join('');
+$('film').addEventListener('click', (e) => {
+  const t = e.target.closest('.th');
+  if (t) jump(+t.dataset.k);
+});
+
+/* ---------------- grid ---------------- */
+const allTags = [...new Set(PROJECTS.flatMap(p => p.tags || []))].sort();
+$('tagFilters').innerHTML = `<button class="chip on" data-tag="">All</button>` +
+  allTags.map(t => `<button class="chip" data-tag="${t}">${t}</button>`).join('');
+
+function paintGrid() {
+  const q = filter.q.toLowerCase().trim();
+  const rows = PROJECTS.map((p, k) => ({ p, k })).filter(({ p }) =>
+    (!filter.tag || (p.tags || []).includes(filter.tag)) &&
+    (!q || (p.name + ' ' + p.desc + ' ' + (p.tags || []).join(' ')).toLowerCase().includes(q))
+  );
+  $('grid').innerHTML = rows.map(({ p, k }) => `
+    <article class="card">
+      <a class="cover" data-k="${k}" href="#" aria-label="${p.name}">
+        ${p.image ? `<img src="${p.image}" alt="${p.name}" loading="lazy">` : ''}
+        ${!p.demoLive ? `<span class="badge">no live demo</span>` : ''}
+      </a>
+      <div class="body">
+        <h3>${p.name}</h3>
+        <p>${p.desc}</p>
+        <div class="row">
+          <a class="p ${p.demoLive ? '' : 'd'}" href="${p.demo}" target="_blank" rel="noopener">Demo</a>
+          <a href="${p.github}" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+    </article>`).join('') || `<p style="color:#78819a">Nothing matches that filter.</p>`;
+  $('footInfo').textContent = `${rows.length} of ${PROJECTS.length} projects`;
+}
+$('grid').addEventListener('click', (e) => {
+  const c = e.target.closest('[data-k]');
+  if (c && !e.target.closest('a[href^="http"]')) {
+    e.preventDefault();
+    jump(+c.dataset.k);
+    setMode('slides');
+  }
+});
+$('q').addEventListener('input', (e) => { filter.q = e.target.value; paintGrid(); });
+$('tagFilters').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-tag]');
+  if (!b) return;
+  filter.tag = b.dataset.tag || null;
+  [...$('tagFilters').children].forEach(x => x.classList.toggle('on', x === b));
+  paintGrid();
+});
+
+/* ---------------- modes / controls ---------------- */
+function setMode(m) {
+  mode = m;
+  $('slidesView').hidden = m !== 'slides';
+  $('gridView').hidden = m !== 'grid';
+  document.querySelectorAll('[data-mode]').forEach(b => b.classList.toggle('on', b.dataset.mode === m));
+  if (m === 'grid') { paintGrid(); } else { render(); }
+  $('footInfo').textContent = m === 'grid'
+    ? $('footInfo').textContent
+    : `${PROJECTS.filter(p => p.demoLive).length} live demos of ${PROJECTS.length}`;
+}
+document.querySelectorAll('[data-mode]').forEach(b => b.onclick = () => setMode(b.dataset.mode));
+$('prev').onclick = () => go(-1);
+$('next').onclick = () => go(1);
+
+function toggleAuto() {
+  if (auto) { clearInterval(auto); auto = null; }
+  else { auto = setInterval(() => go(1), 5200); }
+  $('auto').classList.toggle('on', !!auto);
+  $('auto').textContent = auto ? '⏸ Pause' : '▶ Autoplay';
+}
+$('auto').onclick = toggleAuto;
+$('full').onclick = () => {
+  if (document.fullscreenElement) document.exitFullscreen();
+  else document.documentElement.requestFullscreen?.();
+};
+
+addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); go(1); }
+  if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1); }
+  if (e.key.toLowerCase() === 'g') setMode(mode === 'grid' ? 'slides' : 'grid');
+  if (e.key.toLowerCase() === 'f') $('full').click();
+  if (e.key === ' ') { e.preventDefault(); toggleAuto(); }
+});
+
+/* swipe */
+let sx = null;
+addEventListener('touchstart', (e) => sx = e.touches[0].clientX, { passive: true });
+addEventListener('touchend', (e) => {
+  if (sx === null) return;
+  const dx = e.changedTouches[0].clientX - sx;
+  if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+  sx = null;
+}, { passive: true });
+
+/* boot */
+$('count').textContent = `· ${PROJECTS.length} builds`;
+render();
+if (location.hash === '#grid') setMode('grid');
+$('footInfo').textContent = `${PROJECTS.filter(p => p.demoLive).length} live demos of ${PROJECTS.length}`;
+</script>
+</body>
+</html>
