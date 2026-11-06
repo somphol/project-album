@@ -1,5 +1,101 @@
 [
  {
+  "id": "calculus-explorer-3d",
+  "name": "Calculus Explorer 3D",
+  "desc": "Calculus Explorer 3D: AP Calculus AB interactive 3D visualizer with 8 WebGL units, 40 worked examples, and a 96-question adaptive mastery engine.",
+  "tags": [
+   "Learning"
+  ],
+  "github": "https://github.com/somphol/calculus-explorer-3d",
+  "demo": "https://somphol.github.io/calculus-explorer-3d/",
+  "demoLive": true,
+  "homepage": "https://somphol.github.io/calculus-explorer-3d/",
+  "lang": "JavaScript",
+  "pushed": "2026-11-06",
+  "image": "img/calculus-explorer-3d.jpg",
+  "py": 1600
+ },
+ {
+  "id": "calculus-explorer-3d-skill",
+  "name": "Calculus Explorer 3D — Skill",
+  "desc": "OpenCode skill: build a release-grade, eight-unit AP Calculus AB Three.js studio with adaptive mastery, tests and GitHub Pages.",
+  "tags": [
+   "Learning"
+  ],
+  "github": "https://github.com/somphol/calculus-explorer-3d-skill",
+  "demo": "https://somphol.github.io/calculus-explorer-3d-skill/",
+  "demoLive": true,
+  "homepage": "https://somphol.github.io/calculus-explorer-3d-skill/",
+  "lang": "JavaScript",
+  "pushed": "2026-11-06",
+  "image": "img/calculus-explorer-3d-skill.jpg",
+  "py": 1600
+ },
+ {
+  "id": "cute3d-animal-studio",
+  "name": "Cute3D Animal Studio",
+  "desc": "Cute3D: a zero-asset 3D animal studio built entirely from Three.js primitives, with bilingual EN/TH UI, procedural audio and transparent PNG export.",
+  "tags": [
+   "Studio"
+  ],
+  "github": "https://github.com/somphol/cute3d-animal-studio",
+  "demo": "https://somphol.github.io/cute3d-animal-studio/",
+  "demoLive": true,
+  "homepage": "https://somphol.github.io/cute3d-animal-studio/",
+  "lang": "JavaScript",
+  "pushed": "2026-11-06",
+  "image": "img/cute3d-animal-studio.jpg",
+  "py": 1600
+ },
+ {
+  "id": "vu_project_ideas",
+  "name": "VU Project Ideas",
+  "desc": "54 production-grade build briefs with copy-ready prompts.",
+  "tags": [
+   "Studio"
+  ],
+  "github": "https://github.com/somphol/vu_project_ideas",
+  "demo": "https://somphol.github.io/vu_project_ideas/",
+  "demoLive": true,
+  "homepage": "https://somphol.github.io/vu_project_ideas/",
+  "lang": "JavaScript",
+  "pushed": "2026-11-06",
+  "image": "img/vu_project_ideas.jpg",
+  "py": 1440
+ },
+ {
+  "id": "wanderlust-3d",
+  "name": "Wanderlust 3D",
+  "desc": "Wanderlust 3D — a static, photography-led travel atlas for 15 destinations across Japan, Italy and Costa Rica.",
+  "tags": [
+   "3D World"
+  ],
+  "github": "https://github.com/somphol/wanderlust-3d",
+  "demo": "https://somphol.github.io/wanderlust-3d/",
+  "demoLive": true,
+  "homepage": "https://somphol.github.io/wanderlust-3d/",
+  "lang": "JavaScript",
+  "pushed": "2026-11-06",
+  "image": "img/wanderlust-3d.jpg",
+  "py": 1200
+ },
+ {
+  "id": "algorithm-explorer",
+  "name": "Algorithm Explorer 3D",
+  "desc": "Interactive 3D study studio for the top 15 software-engineering interview patterns.",
+  "tags": [
+   "Learning"
+  ],
+  "github": "https://github.com/somphol/algorithm-explorer",
+  "demo": "https://somphol.github.io/algorithm-explorer/",
+  "demoLive": true,
+  "homepage": "https://somphol.github.io/algorithm-explorer/",
+  "lang": "JavaScript",
+  "pushed": "2026-11-05",
+  "image": "img/algorithm-explorer.jpg",
+  "py": 1600
+ },
+ {
   "id": "full-3d-15-puzzle-studio",
   "name": "Full 3D 15-Puzzle Studio",
   "desc": "A tactile 3D 15-puzzle with an A* auto-solver, bilingual EN/TH UI, synthesized audio and zero backend.",
@@ -62,6 +158,70 @@
   "lang": "HTML",
   "pushed": "2026-11-05",
   "image": "img/opencode-skills.jpg",
+  "py": 1600
+ },
+ {
+  "id": "serenity-3d-studio",
+  "name": "Serenity 3D Studio",
+  "desc": "Bilingual 3D mind-watching studio: 20 guided observer practices in clouds, a stream and a breathing orb. Vanilla Three.js, no backend.",
+  "tags": [
+   "Studio"
+  ],
+  "github": "https://github.com/somphol/serenity-3d-studio",
+  "demo": "https://somphol.github.io/serenity-3d-studio/",
+  "demoLive": true,
+  "homepage": "https://somphol.github.io/serenity-3d-studio/",
+  "lang": "JavaScript",
+  "pushed": "2026-11-05",
+  "image": "img/serenity-3d-studio.jpg",
+  "py": 1440
+ },
+ {
+  "id": "serenity-3d-studio-skill",
+  "name": "Serenity 3D Studio — Skill",
+  "desc": "OpenCode skill + tested scaffold for building a bilingual 3D mind-watching studio (Serenity 3D).",
+  "tags": [
+   "Studio"
+  ],
+  "github": "https://github.com/somphol/serenity-3d-studio-skill",
+  "demo": "https://somphol.github.io/serenity-3d-studio-skill/",
+  "demoLive": true,
+  "homepage": "https://somphol.github.io/serenity-3d-studio-skill/",
+  "lang": "JavaScript",
+  "pushed": "2026-11-05",
+  "image": "img/serenity-3d-studio-skill.jpg",
+  "py": 1440
+ },
+ {
+  "id": "suatsync-3d",
+  "name": "SuatSync 3D",
+  "desc": "SuatSync 3D — Chinabunchorn 9 recitations chanting and karaoke studio: synchronized Pali, Thai/English meaning, procedural 3D mandala, streaks and calibration.",
+  "tags": [
+   "Studio"
+  ],
+  "github": "https://github.com/somphol/suatsync-3d",
+  "demo": "https://somphol.github.io/suatsync-3d/",
+  "demoLive": true,
+  "homepage": "https://somphol.github.io/suatsync-3d/",
+  "lang": "JavaScript",
+  "pushed": "2026-11-05",
+  "image": "img/suatsync-3d.jpg",
+  "py": 1440
+ },
+ {
+  "id": "vintage-wurlitzer-lullaby-jukebox",
+  "name": "Vintage Wurlitzer Lullaby Jukebox",
+  "desc": "Vintage Wurlitzer 3D Lullaby Jukebox & Sleep Studio — a procedural 1940s bubbler with synthesized lullabies, archive streams, ambient beds and a sleep timer.",
+  "tags": [
+   "Studio"
+  ],
+  "github": "https://github.com/somphol/vintage-wurlitzer-lullaby-jukebox",
+  "demo": "https://somphol.github.io/vintage-wurlitzer-lullaby-jukebox/",
+  "demoLive": true,
+  "homepage": "https://somphol.github.io/vintage-wurlitzer-lullaby-jukebox/",
+  "lang": "JavaScript",
+  "pushed": "2026-11-05",
+  "image": "img/vintage-wurlitzer-lullaby-jukebox.jpg",
   "py": 1600
  },
  {
@@ -164,7 +324,9 @@
   "id": "texas-holdem-3d",
   "name": "Texas Holdem 3D",
   "desc": "Night Shift 3D — a cinematic Three.js Texas Hold'em table with Monte Carlo AI, 3D cards and chips, side pots, and a dark casino theme.",
-  "tags": [],
+  "tags": [
+   "Game"
+  ],
   "github": "https://github.com/somphol/texas-holdem-3d",
   "demo": "https://somphol.github.io/texas-holdem-3d/",
   "demoLive": true,
@@ -319,6 +481,22 @@
   "pushed": "2026-11-03",
   "image": "img/bangkok-3d-tour-guide.jpg",
   "py": 1600
+ },
+ {
+  "id": "bangkok-miniature",
+  "name": "Bangkok Miniature",
+  "desc": "An interactive 3D miniature of Bangkok: the Chao Phraya, eight landmarks, traffic, river boats and day/night.",
+  "tags": [
+   "3D World"
+  ],
+  "github": "https://github.com/somphol/bangkok-miniature",
+  "demo": "https://somphol.github.io/bangkok-miniature/",
+  "demoLive": true,
+  "homepage": "https://somphol.github.io/bangkok-miniature/",
+  "lang": "TypeScript",
+  "pushed": "2026-11-03",
+  "image": "img/bangkok-miniature.jpg",
+  "py": 1500
  },
  {
   "id": "brickstep-3d-pro",

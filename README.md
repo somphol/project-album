@@ -1,7 +1,7 @@
 # Project Album
 
 A slideshow of every build in `~/Projects`: one screenshot each, with the GitHub repo and
-the live demo link. 40 projects, generated from the repos themselves — nothing is typed by hand.
+the live demo link. 50 projects, generated from the repos themselves — nothing is typed by hand.
 
 ![preview](preview.png)
 
@@ -30,7 +30,8 @@ node build.mjs
 
 The script:
 
-1. finds every git repo with a `github.com` origin under `~/Projects`;
+1. finds every git repo with a `github.com` origin under `~/Projects`, plus the finished builds
+   listed in `EXTRA_REPOS` that live outside it (currently `~/bangkok-miniature`);
 2. picks the best local screenshot per repo (prefers `screenshot.png` → `hero` → `preview`, ranks
    landscape images above portrait/logo/social cards, ignores images narrower than 420px);
 3. resizes it to 1500px wide JPEG (`quality 80`) into `img/<repo>.jpg`;
@@ -51,6 +52,8 @@ common tracked file extension — so a rebuild works fully offline.
 
 - `learncpp` is deliberately excluded: its GitHub repo is not public (404), so the card would have
   a dead link. Add it back by removing it from the `SKIP` set in `build.mjs`.
+- `bangkok-miniature` lives at `~/bangkok-miniature`, not in `~/Projects`; it is listed in
+  `EXTRA_REPOS` so the finished build still appears.
 - `city-miniature`'s live page draws its WebGL canvas after a headless screenshot fires, so its
   image is pinned to the skill's own `docs/preview.png`.
 - `preview.png` is the album's own hero shot.

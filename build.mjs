@@ -13,7 +13,11 @@ const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const TOKEN = process.env.GITHUB_TOKEN || '';
 
 // Not published: github.com/somphol/<repo> returns 404, so the card would link nowhere.
-const SKIP = new Set(['learncpp']);
+// The album does not show itself.
+const SKIP = new Set(['learncpp', 'project-album']);
+
+// Finished builds that live outside ~/Projects but still belong in the album.
+const EXTRA_REPOS = [path.join(ROOT, '..', 'bangkok-miniature')];
 
 fs.mkdirSync(IMG, { recursive: true });
 
@@ -21,12 +25,23 @@ const sh = (c, o = {}) => execSync(c, { encoding: 'utf8', stdio: ['ignore', 'pip
 const run = (bin, args) => { try { return execFileSync(bin, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }); } catch (e) { return e.stdout || ''; } };
 
 // ---------- 1. repos ----------
-const repos = fs.readdirSync(ROOT, { withFileTypes: true })
-  .filter(d => d.isDirectory() && fs.existsSync(path.join(ROOT, d.name, '.git')))
-  .map(d => d.name)
-  .filter(n => { try { return sh(`git -C "${path.join(ROOT, n)}" remote get-url origin`).includes('github.com'); } catch { return false; } })
-  .filter(n => !SKIP.has(n))
-  .sort();
+// name -> directory; siblings of this repo first, then EXTRA_REPOS
+const repoDirs = new Map();
+for (const d of fs.readdirSync(ROOT, { withFileTypes: true })) {
+  if (!d.isDirectory()) continue;
+  const dir = path.join(ROOT, d.name);
+  if (!fs.existsSync(path.join(dir, '.git'))) continue;
+  try {
+    if (sh(`git -C "${dir}" remote get-url origin`).includes('github.com')) repoDirs.set(d.name, dir);
+  } catch {}
+}
+for (const dir of EXTRA_REPOS) {
+  if (!fs.existsSync(path.join(dir, '.git'))) continue;
+  try {
+    if (sh(`git -C "${dir}" remote get-url origin`).includes('github.com')) repoDirs.set(path.basename(dir), dir);
+  } catch {}
+}
+const repos = [...repoDirs.keys()].filter(n => !SKIP.has(n)).sort();
 
 // ---------- 2. image candidates ----------
 const dims = (file) => {
@@ -165,6 +180,17 @@ const OVERRIDES = {
   'full-3d-lucky-draw-studio': 'Full 3D Lucky Draw Studio',
   'full-3d-chess-academy': 'Full 3D Chess Academy',
   'leab-tui-3d': 'Leab-Tui 3D',
+  'algorithm-explorer': 'Algorithm Explorer 3D',
+  'calculus-explorer-3d': 'Calculus Explorer 3D',
+  'calculus-explorer-3d-skill': 'Calculus Explorer 3D — Skill',
+  'cute3d-animal-studio': 'Cute3D Animal Studio',
+  'serenity-3d-studio': 'Serenity 3D Studio',
+  'serenity-3d-studio-skill': 'Serenity 3D Studio — Skill',
+  'suatsync-3d': 'SuatSync 3D',
+  'vintage-wurlitzer-lullaby-jukebox': 'Vintage Wurlitzer Lullaby Jukebox',
+  'vu_project_ideas': 'VU Project Ideas',
+  'wanderlust-3d': 'Wanderlust 3D',
+  'bangkok-miniature': 'Bangkok Miniature',
 };
 const LOWER = new Set(['and', 'of', 'the', 'de', 'to']);
 const title = (id) => OVERRIDES[id] || id.split('-').map((w, i) => {
@@ -174,10 +200,10 @@ const title = (id) => OVERRIDES[id] || id.split('-').map((w, i) => {
 }).join(' ');
 
 const TAGS = [
-  [/khan-trig|trigonometry|booklet|learncpp|word-practice|gutenberg|voa|calculator/, 'Learning'],
-  [/chess|makruk|poker|leab|solitaire|klondike|rubik|puzzle|jigsaw|pong|flappy|race|millionaire|cyberdoom|snooker|playhouse|brickstep/, 'Game'],
-  [/city|miniature|tour|house|wat-arun|bts|tram|ocean|sky|horizon|hearth|nexus|worldclock/, '3D World'],
-  [/opencode|skills|tool|studio/, 'Studio'],
+  [/khan-trig|trigonometry|booklet|learncpp|word-practice|gutenberg|voa|calculator|algorithm|calculus/, 'Learning'],
+  [/chess|makruk|poker|holdem|leab|solitaire|klondike|rubik|puzzle|jigsaw|pong|flappy|race|millionaire|cyberdoom|snooker|playhouse|brickstep/, 'Game'],
+  [/city|miniature|tour|house|wat-arun|bts|tram|ocean|sky|horizon|hearth|nexus|worldclock|wanderlust/, '3D World'],
+  [/opencode|skills|tool|studio|suatsync|wurlitzer|jukebox|ideas/, 'Studio'],
 ];
 const tagsFor = (repo, desc) => {
   const t = TAGS.filter(([re]) => re.test(repo)).map(([, n]) => n);
@@ -189,7 +215,7 @@ const projects = [];
 const log = [];
 
 for (const repo of repos) {
-  const dir = path.join(ROOT, repo);
+  const dir = repoDirs.get(repo);
   const m = await meta(repo);
   const pages = `https://${OWNER}.github.io/${repo}/`;
   const imgOut = path.join(IMG, `${repo}.jpg`);
