@@ -27,20 +27,20 @@ const run = (bin, args) => { try { return execFileSync(bin, args, { encoding: 'u
 // ---------- 1. repos ----------
 // name -> directory; siblings of this repo first, then EXTRA_REPOS
 const repoDirs = new Map();
+// The GitHub slug can differ from the local folder name (e.g. aurelis-watch ->
+// aurelis-calibre-07), and every link must use the slug or it 404s.
+const slugOf = (url) => url.trim().replace(/\.git$/, '').split(/[/:]/).pop();
+const addRepo = (dir) => {
+  if (!fs.existsSync(path.join(dir, '.git'))) return;
+  try {
+    const url = sh(`git -C "${dir}" remote get-url origin`);
+    if (url.includes('github.com')) repoDirs.set(slugOf(url), dir);
+  } catch {}
+};
 for (const d of fs.readdirSync(ROOT, { withFileTypes: true })) {
-  if (!d.isDirectory()) continue;
-  const dir = path.join(ROOT, d.name);
-  if (!fs.existsSync(path.join(dir, '.git'))) continue;
-  try {
-    if (sh(`git -C "${dir}" remote get-url origin`).includes('github.com')) repoDirs.set(d.name, dir);
-  } catch {}
+  if (d.isDirectory()) addRepo(path.join(ROOT, d.name));
 }
-for (const dir of EXTRA_REPOS) {
-  if (!fs.existsSync(path.join(dir, '.git'))) continue;
-  try {
-    if (sh(`git -C "${dir}" remote get-url origin`).includes('github.com')) repoDirs.set(path.basename(dir), dir);
-  } catch {}
-}
+for (const dir of EXTRA_REPOS) addRepo(dir);
 const repos = [...repoDirs.keys()].filter(n => !SKIP.has(n)).sort();
 
 // ---------- 2. image candidates ----------
@@ -76,10 +76,17 @@ const baseScore = (name) => {
 const IMG_OVERRIDE = {
   // the live page renders its WebGL canvas after the headless shot is taken
   'city-miniature': 'skills/city-miniature/docs/preview.png',
+  // multiple same-ranked screenshots; pick the card that shows the studio
+  'platewise-3d': 'assets/studio.png',
+  // the catalog's live URL is raw JSON; this card is a curated contact sheet
+  'opencode-skills': '@assets/opencode-skills.png',
 };
 
+const resolveOverride = (dir, value) =>
+  value.startsWith('@') ? path.join(OUT, value.slice(1)) : path.join(dir, value);
+
 function pickImage(dir, repo) {
-  const forced = IMG_OVERRIDE[repo] && path.join(dir, IMG_OVERRIDE[repo]);
+  const forced = IMG_OVERRIDE[repo] && resolveOverride(dir, IMG_OVERRIDE[repo]);
   if (forced && fs.existsSync(forced)) {
     const { w, h } = dims(forced);
     return { file: forced, score: 0, w, h };
@@ -191,6 +198,13 @@ const OVERRIDES = {
   'vu_project_ideas': 'VU Project Ideas',
   'wanderlust-3d': 'Wanderlust 3D',
   'bangkok-miniature': 'Bangkok Miniature',
+  'aperture-80': 'Aperture 80',
+  'aurelis-calibre-07': 'Aurelis Calibre 07',
+  'boss-battle-mplai': 'Boss Battle · ม.ปลาย',
+  'boss-battle-tpat3': 'Boss Battle · TPAT3',
+  'i-have-adhd-demo': 'i-have-adhd Demo',
+  'platewise-3d': 'PlateWise 3D',
+  'platewise-3d-skill': 'PlateWise 3D — Skill',
 };
 const LOWER = new Set(['and', 'of', 'the', 'de', 'to']);
 const title = (id) => OVERRIDES[id] || id.split('-').map((w, i) => {
@@ -200,9 +214,11 @@ const title = (id) => OVERRIDES[id] || id.split('-').map((w, i) => {
 }).join(' ');
 
 const TAGS = [
-  [/khan-trig|trigonometry|booklet|learncpp|word-practice|gutenberg|voa|calculator|algorithm|calculus/, 'Learning'],
-  [/chess|makruk|poker|holdem|leab|solitaire|klondike|rubik|puzzle|jigsaw|pong|flappy|race|millionaire|cyberdoom|snooker|playhouse|brickstep/, 'Game'],
+  [/khan-trig|trigonometry|booklet|learncpp|word-practice|gutenberg|voa|calculator|algorithm|calculus|boss-battle|adhd/, 'Learning'],
+  [/chess|makruk|poker|holdem|leab|solitaire|klondike|rubik|puzzle|jigsaw|pong|flappy|race|millionaire|cyberdoom|snooker|playhouse|brickstep|boss-battle/, 'Game'],
   [/city|miniature|tour|house|wat-arun|bts|tram|ocean|sky|horizon|hearth|nexus|worldclock|wanderlust/, '3D World'],
+  [/aperture|aurelis/, 'Anatomy'],
+  [/platewise/, 'Health'],
   [/opencode|skills|tool|studio|suatsync|wurlitzer|jukebox|ideas/, 'Studio'],
 ];
 const tagsFor = (repo, desc) => {

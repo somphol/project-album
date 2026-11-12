@@ -2,7 +2,7 @@
 
 ## What it is
 
-A static slideshow of the 50 projects in `~/Projects`: one screenshot per project with its GitHub
+A static slideshow of the 57 projects in `~/Projects`: one screenshot per project with its GitHub
 repo and live demo link. `build.mjs` scans sibling repos (plus a small `EXTRA_REPOS` list for
 finished builds kept elsewhere), picks a screenshot from each, resizes it, checks the demo URL, and
 writes a single self-contained `index.html`. It is not a portfolio CMS and has no backend, database,
@@ -25,7 +25,8 @@ its usual location inside `~/Projects`.
 - `build.mjs` — the whole pipeline: repo discovery → image ranking → resize → demo check → metadata
   → template injection. Five small tables near the top control behaviour: `SKIP` (repos to omit),
   `EXTRA_REPOS` (finished builds outside `~/Projects`), `IMG_OVERRIDE` (force a specific screenshot),
-  `OVERRIDES` (display names), `TAGS` (category regexes).
+  `OVERRIDES` (display names), `TAGS` (category regexes). Repo discovery keys each card by the
+  GitHub slug from `origin`, not by the local folder name.
 - `template.html` — the UI: markup, CSS, and all client JS. Contains the literal placeholder
   `/*__DATA__*/[]`, which `build.mjs` replaces with the project array.
 - `index.html` — generated. Never edit by hand; it is overwritten on every build.
@@ -52,10 +53,22 @@ its usual location inside `~/Projects`.
 - **`EXTRA_REPOS` holds `~/bangkok-miniature`**, a finished, live build that lives outside
   `~/Projects`. Keep that list short and explicit; anything else belongs in `~/Projects`.
 - **Skill-catalog repos are included** (`opencode-skills`, `calculus-explorer-3d-skill`,
-  `serenity-3d-studio-skill`). They are separate public builds with their own live pages, so they are
-  cards of their own even when their preview resembles the app they scaffold.
+  `serenity-3d-studio-skill`, `platewise-3d-skill`). They are separate public builds with their own
+  live pages, so they are cards of their own even when their preview resembles the app they scaffold.
+- **Local folder names may differ from the GitHub slug.** `aurelis-watch/` publishing to
+  `somphol/aurelis-calibre-07` is the existing case; always derive the slug from the remote so the
+  card, image filename and demo URL stay consistent.
 - **`city-miniature` is in `IMG_OVERRIDE`** because its WebGL canvas draws after a headless
   screenshot fires, producing an empty frame.
+- **`platewise-3d` is in `IMG_OVERRIDE`** because several `assets/*.png` files rank equally; the
+  studio screenshot is the one that shows the actual product.
+- **`opencode-skills` is in `IMG_OVERRIDE` with an `@` path.** Its live URL serves raw JSON and its
+  repo only has two skill previews, so the card is a curated contact sheet in
+  `assets/opencode-skills.png`; `assets/opencode-skills-sheet.html` is the source used to capture it.
+  An `@` value resolves from this repo instead of the project directory.
+- **Tags are regex-driven, not fixed enums.** `Anatomy` covers the `aperture-80` / `aurelis-calibre-07`
+  object studies and `Health` covers the `platewise-*` pair; new categories appear automatically in
+  the filter bar.
 - Images are committed. Regenerating them changes binary diffs; that is expected and fine.
 
 ## Known issues

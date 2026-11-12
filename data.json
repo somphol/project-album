@@ -1,5 +1,85 @@
 [
  {
+  "id": "i-have-adhd-demo",
+  "name": "i-have-adhd Demo",
+  "desc": "Nine coding requests answered with and without the i-have-adhd output skill — side-by-side demo.",
+  "tags": [
+   "Learning"
+  ],
+  "github": "https://github.com/somphol/i-have-adhd-demo",
+  "demo": "https://somphol.github.io/i-have-adhd-demo/",
+  "demoLive": true,
+  "homepage": "https://somphol.github.io/i-have-adhd-demo/",
+  "lang": "JavaScript",
+  "pushed": "2026-11-08",
+  "image": "img/i-have-adhd-demo.jpg",
+  "py": 1400
+ },
+ {
+  "id": "aperture-80",
+  "name": "Aperture 80",
+  "desc": "Aperture 80 — Anatomy of an Image. A procedural 80mm leaf-shutter lens that opens as you scroll. Built with OpenCode and DeepSeek V4.1 Flash.",
+  "tags": [
+   "Anatomy"
+  ],
+  "github": "https://github.com/somphol/aperture-80",
+  "demo": "https://somphol.github.io/aperture-80/",
+  "demoLive": true,
+  "homepage": "https://somphol.github.io/aperture-80/",
+  "lang": "JavaScript",
+  "pushed": "2026-11-07",
+  "image": "img/aperture-80.jpg",
+  "py": 1600
+ },
+ {
+  "id": "aurelis-calibre-07",
+  "name": "Aurelis Calibre 07",
+  "desc": "Aurelis Calibre 07 — Anatomy of a Second. A procedural watch that disassembles as you scroll. Built from one sentence with OpenCode and DeepSeek V4.1 Flash.",
+  "tags": [
+   "Anatomy"
+  ],
+  "github": "https://github.com/somphol/aurelis-calibre-07",
+  "demo": "https://somphol.github.io/aurelis-calibre-07/",
+  "demoLive": true,
+  "homepage": "https://somphol.github.io/aurelis-calibre-07/",
+  "lang": "JavaScript",
+  "pushed": "2026-11-07",
+  "image": "img/aurelis-calibre-07.jpg",
+  "py": 1600
+ },
+ {
+  "id": "boss-battle-mplai",
+  "name": "Boss Battle · ม.ปลาย",
+  "desc": "Boss Battle: ม.ปลาย — arcade quiz for M.4–M.6 core subjects (7 subjects, 420 questions, Thai/English UI)",
+  "tags": [
+   "Learning",
+   "Game"
+  ],
+  "github": "https://github.com/somphol/boss-battle-mplai",
+  "demo": "https://somphol.github.io/boss-battle-mplai/",
+  "demoLive": true,
+  "homepage": "",
+  "lang": "HTML",
+  "pushed": "2026-11-06",
+  "image": "img/boss-battle-mplai.jpg"
+ },
+ {
+  "id": "boss-battle-tpat3",
+  "name": "Boss Battle · TPAT3",
+  "desc": "Single-file cyberpunk arcade quiz for TPAT3 + English — 180 questions, Thai/English UI, GitHub Pages",
+  "tags": [
+   "Learning",
+   "Game"
+  ],
+  "github": "https://github.com/somphol/boss-battle-tpat3",
+  "demo": "https://somphol.github.io/boss-battle-tpat3/",
+  "demoLive": true,
+  "homepage": "",
+  "lang": "HTML",
+  "pushed": "2026-11-06",
+  "image": "img/boss-battle-tpat3.jpg"
+ },
+ {
   "id": "calculus-explorer-3d",
   "name": "Calculus Explorer 3D",
   "desc": "Calculus Explorer 3D: AP Calculus AB interactive 3D visualizer with 8 WebGL units, 40 worked examples, and a 96-question adaptive mastery engine.",
@@ -46,6 +126,38 @@
   "pushed": "2026-11-06",
   "image": "img/cute3d-animal-studio.jpg",
   "py": 1600
+ },
+ {
+  "id": "platewise-3d",
+  "name": "PlateWise 3D",
+  "desc": "PlateWise 3D — a static Three.js non-starchy whole-food plate builder with live net carbs, fiber, glycemic load and a simulated glucose curve.",
+  "tags": [
+   "Health"
+  ],
+  "github": "https://github.com/somphol/platewise-3d",
+  "demo": "https://somphol.github.io/platewise-3d/",
+  "demoLive": true,
+  "homepage": "https://somphol.github.io/platewise-3d/",
+  "lang": "JavaScript",
+  "pushed": "2026-11-06",
+  "image": "img/platewise-3d.jpg",
+  "py": 1600
+ },
+ {
+  "id": "platewise-3d-skill",
+  "name": "PlateWise 3D — Skill",
+  "desc": "OpenCode skill: build PlateWise 3D, a static Three.js non-starchy whole-food plate picker with live glycemic analysis.",
+  "tags": [
+   "Health"
+  ],
+  "github": "https://github.com/somphol/platewise-3d-skill",
+  "demo": "https://somphol.github.io/platewise-3d-skill/",
+  "demoLive": true,
+  "homepage": "https://somphol.github.io/platewise-3d-skill/",
+  "lang": "JavaScript",
+  "pushed": "2026-11-06",
+  "image": "img/platewise-3d-skill.jpg",
+  "py": 1200
  },
  {
   "id": "vu_project_ideas",

@@ -1,7 +1,7 @@
 # Project Album
 
 A slideshow of every build in `~/Projects`: one screenshot each, with the GitHub repo and
-the live demo link. 50 projects, generated from the repos themselves — nothing is typed by hand.
+the live demo link. 57 projects, generated from the repos themselves — nothing is typed by hand.
 
 ![preview](preview.png)
 
@@ -20,7 +20,7 @@ Single-file HTML plus the `img/` folder; works offline, no server needed.
 | `F` | fullscreen |
 | `Space` | autoplay (5.2s per slide) |
 
-Grid mode also filters by tag (3D World, Game, Learning, Studio) and by free text.
+Grid mode also filters by tag (3D World, Game, Learning, Studio, Anatomy, Health) and by free text.
 
 ## Rebuild
 
@@ -31,7 +31,8 @@ node build.mjs
 The script:
 
 1. finds every git repo with a `github.com` origin under `~/Projects`, plus the finished builds
-   listed in `EXTRA_REPOS` that live outside it (currently `~/bangkok-miniature`);
+   listed in `EXTRA_REPOS` that live outside it (currently `~/bangkok-miniature`), and uses the
+   repo slug from the remote (not the folder name) for every link;
 2. picks the best local screenshot per repo (prefers `screenshot.png` → `hero` → `preview`, ranks
    landscape images above portrait/logo/social cards, ignores images narrower than 420px);
 3. resizes it to 1500px wide JPEG (`quality 80`) into `img/<repo>.jpg`;
@@ -56,4 +57,8 @@ common tracked file extension — so a rebuild works fully offline.
   `EXTRA_REPOS` so the finished build still appears.
 - `city-miniature`'s live page draws its WebGL canvas after a headless screenshot fires, so its
   image is pinned to the skill's own `docs/preview.png`.
+- `aurelis-watch/` checks out as `somphol/aurelis-calibre-07`; the album keys cards by remote slug,
+  so the folder name is irrelevant.
+- `opencode-skills` links to a JSON catalog, not a web page; its card uses the contact sheet in
+  `assets/`, regenerated from `assets/opencode-skills-sheet.html`.
 - `preview.png` is the album's own hero shot.
