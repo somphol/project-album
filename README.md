@@ -1,7 +1,7 @@
 # Project Album
 
 A slideshow of every build in `~/Projects`: one screenshot each, with the GitHub repo and
-the live demo link. 57 projects, generated from the repos themselves — nothing is typed by hand.
+the live demo link. 68 projects, generated from the repos themselves — nothing is typed by hand.
 
 ![preview](preview.png)
 

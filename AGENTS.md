@@ -2,7 +2,7 @@
 
 ## What it is
 
-A static slideshow of the 57 projects in `~/Projects`: one screenshot per project with its GitHub
+A static slideshow of the 68 projects in `~/Projects`: one screenshot per project with its GitHub
 repo and live demo link. `build.mjs` scans sibling repos (plus a small `EXTRA_REPOS` list for
 finished builds kept elsewhere), picks a screenshot from each, resizes it, checks the demo URL, and
 writes a single self-contained `index.html`. It is not a portfolio CMS and has no backend, database,

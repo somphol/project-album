@@ -80,7 +80,19 @@ const IMG_OVERRIDE = {
   'platewise-3d': 'assets/studio.png',
   // the catalog's live URL is raw JSON; this card is a curated contact sheet
   'opencode-skills': '@assets/opencode-skills.png',
+  // several same-ranked renders plus a texture atlas; this one shows the frontage
+  'flinders-street-station': 'renders/web_preview.png',
+  // miniature repos ship day/night sets at equal rank; pin the day overview
+  'flinders-street-miniature': 'screenshots/overview-day.png',
+  'tokyo-miniature': 'docs/tokyo-day.png',
+  'youtube-second-brain': 'screenshots/desktop-library.jpg',
+  // a native Mac app with no web build and no screenshots; curated icon sheet
+  'tubeshelf': '@assets/tubeshelf.png',
 };
+
+// Repos whose local images show something else (a deck reuses app shots), so the
+// card must come from the live page. Only captured when the demo really is live.
+const LIVE_CAPTURE = new Set(['vu-session-3', 'tubeshelf-web-ro', 'tubeshelf-web-rw']);
 
 const resolveOverride = (dir, value) =>
   value.startsWith('@') ? path.join(OUT, value.slice(1)) : path.join(dir, value);
@@ -205,6 +217,17 @@ const OVERRIDES = {
   'i-have-adhd-demo': 'i-have-adhd Demo',
   'platewise-3d': 'PlateWise 3D',
   'platewise-3d-skill': 'PlateWise 3D — Skill',
+  'image-annotator': 'Image Annotator',
+  'flinders-street-miniature': 'Flinders Street Miniature',
+  'flinders-street-station': 'Flinders Street Station',
+  'tokyo-miniature': 'Tokyo Miniature',
+  'youtube-second-brain': 'YouTube Second Brain',
+  'youtube-second-brain-skill': 'YouTube Second Brain — Skill',
+  'youtube-slide-decks': 'YouTube Slide Decks',
+  'tubeshelf': 'TubeShelf',
+  'tubeshelf-web-ro': 'TubeShelf Web — Read-only',
+  'tubeshelf-web-rw': 'TubeShelf Web — Editable',
+  'vu-session-3': 'VU Session 3',
 };
 const LOWER = new Set(['and', 'of', 'the', 'de', 'to']);
 const title = (id) => OVERRIDES[id] || id.split('-').map((w, i) => {
@@ -214,12 +237,12 @@ const title = (id) => OVERRIDES[id] || id.split('-').map((w, i) => {
 }).join(' ');
 
 const TAGS = [
-  [/khan-trig|trigonometry|booklet|learncpp|word-practice|gutenberg|voa|calculator|algorithm|calculus|boss-battle|adhd/, 'Learning'],
+  [/khan-trig|trigonometry|booklet|learncpp|word-practice|gutenberg|voa|calculator|algorithm|calculus|boss-battle|adhd|vu-session/, 'Learning'],
   [/chess|makruk|poker|holdem|leab|solitaire|klondike|rubik|puzzle|jigsaw|pong|flappy|race|millionaire|cyberdoom|snooker|playhouse|brickstep|boss-battle/, 'Game'],
-  [/city|miniature|tour|house|wat-arun|bts|tram|ocean|sky|horizon|hearth|nexus|worldclock|wanderlust/, '3D World'],
+  [/city|miniature|tour|house|wat-arun|bts|tram|ocean|sky|horizon|hearth|nexus|worldclock|wanderlust|flinders/, '3D World'],
   [/aperture|aurelis/, 'Anatomy'],
   [/platewise/, 'Health'],
-  [/opencode|skills|tool|studio|suatsync|wurlitzer|jukebox|ideas/, 'Studio'],
+  [/opencode|skills|tool|studio|suatsync|wurlitzer|jukebox|ideas|youtube|tubeshelf|annotator/, 'Studio'],
 ];
 const tagsFor = (repo, desc) => {
   const t = TAGS.filter(([re]) => re.test(repo)).map(([, n]) => n);
@@ -244,7 +267,7 @@ for (const repo of repos) {
     if (alt !== pages && await demoOk(alt)) { demo = alt; ok = true; }
   }
 
-  let picked = pickImage(dir, repo);
+  let picked = LIVE_CAPTURE.has(repo) ? null : pickImage(dir, repo);
   let source = 'repo';
 
   // no local screenshot? capture the live page instead (and only if it is really live)

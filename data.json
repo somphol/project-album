@@ -1,5 +1,177 @@
 [
  {
+  "id": "tubeshelf",
+  "name": "TubeShelf",
+  "desc": "A local-first macOS YouTube shelf with on-device category suggestions, slide decks, a course catalog and portable JSON backups.",
+  "tags": [
+   "Studio"
+  ],
+  "github": "https://github.com/somphol/tubeshelf",
+  "demo": "https://somphol.github.io/tubeshelf-web-ro/",
+  "demoLive": true,
+  "homepage": "https://somphol.github.io/tubeshelf-web-ro/",
+  "lang": "Swift",
+  "pushed": "2026-11-15",
+  "image": "img/tubeshelf.jpg",
+  "py": 1600
+ },
+ {
+  "id": "tubeshelf-web-ro",
+  "name": "TubeShelf Web — Read-only",
+  "desc": "Read-only web viewer for TubeShelf backups",
+  "tags": [
+   "Studio"
+  ],
+  "github": "https://github.com/somphol/tubeshelf-web-ro",
+  "demo": "https://somphol.github.io/tubeshelf-web-ro/",
+  "demoLive": true,
+  "homepage": "https://somphol.github.io/tubeshelf-web-ro/",
+  "lang": "JavaScript",
+  "pushed": "2026-11-15",
+  "image": "img/tubeshelf-web-ro.jpg"
+ },
+ {
+  "id": "tubeshelf-web-rw",
+  "name": "TubeShelf Web — Editable",
+  "desc": "Editable, local-first TubeShelf backup editor for the browser. Load, edit videos and categories, export a new backup; Google Drive sync planned.",
+  "tags": [
+   "Studio"
+  ],
+  "github": "https://github.com/somphol/tubeshelf-web-rw",
+  "demo": "https://somphol.github.io/tubeshelf-web-rw/",
+  "demoLive": true,
+  "homepage": "https://somphol.github.io/tubeshelf-web-rw/",
+  "lang": "JavaScript",
+  "pushed": "2026-11-15",
+  "image": "img/tubeshelf-web-rw.jpg"
+ },
+ {
+  "id": "vu-session-3",
+  "name": "VU Session 3",
+  "desc": "Session 3: VU AI Exploration — interactive browser deck",
+  "tags": [
+   "Learning"
+  ],
+  "github": "https://github.com/somphol/vu-session-3",
+  "demo": "https://somphol.github.io/vu-session-3/",
+  "demoLive": true,
+  "homepage": "",
+  "lang": "CSS",
+  "pushed": "2026-11-15",
+  "image": "img/vu-session-3.jpg"
+ },
+ {
+  "id": "flinders-street-miniature",
+  "name": "Flinders Street Miniature",
+  "desc": "High-key pastel Three.js miniature of the Flinders Street corner: Hoddle Grid, Yarra, eight landmarks",
+  "tags": [
+   "3D World"
+  ],
+  "github": "https://github.com/somphol/flinders-street-miniature",
+  "demo": "https://somphol.github.io/flinders-street-miniature/",
+  "demoLive": true,
+  "homepage": "",
+  "lang": "TypeScript",
+  "pushed": "2026-11-14",
+  "image": "img/flinders-street-miniature.jpg",
+  "py": 1440
+ },
+ {
+  "id": "flinders-street-station",
+  "name": "Flinders Street Station",
+  "desc": "Scripted 1:1 Blender model of Flinders Street Station with a baked Three.js web viewer",
+  "tags": [
+   "3D World"
+  ],
+  "github": "https://github.com/somphol/flinders-street-station",
+  "demo": "https://somphol.github.io/flinders-street-station/",
+  "demoLive": true,
+  "homepage": "",
+  "lang": "Python",
+  "pushed": "2026-11-14",
+  "image": "img/flinders-street-station.jpg",
+  "py": 1280
+ },
+ {
+  "id": "image-annotator",
+  "name": "Image Annotator",
+  "desc": "Native macOS app to draw arrows and add text on a photo, then save a flattened PNG or JPEG.",
+  "tags": [
+   "Studio"
+  ],
+  "github": "https://github.com/somphol/image-annotator",
+  "demo": "https://somphol.github.io/image-annotator/",
+  "demoLive": false,
+  "homepage": "",
+  "lang": "Swift",
+  "pushed": "2026-11-14",
+  "image": "img/image-annotator.jpg",
+  "py": 1400
+ },
+ {
+  "id": "youtube-slide-decks",
+  "name": "YouTube Slide Decks",
+  "desc": "Private YouTube video slide decks with a local viewer and PowerPoint export",
+  "tags": [
+   "Studio"
+  ],
+  "github": "https://github.com/somphol/youtube-slide-decks",
+  "demo": "https://somphol.github.io/youtube-slide-decks/",
+  "demoLive": true,
+  "homepage": "",
+  "lang": "JavaScript",
+  "pushed": "2026-11-14",
+  "image": "img/youtube-slide-decks.jpg",
+  "py": 1440
+ },
+ {
+  "id": "tokyo-miniature",
+  "name": "Tokyo Miniature",
+  "desc": "An interactive, offline 3D miniature of central Tokyo built with React and three.js.",
+  "tags": [
+   "3D World"
+  ],
+  "github": "https://github.com/somphol/tokyo-miniature",
+  "demo": "https://somphol.github.io/tokyo-miniature/",
+  "demoLive": true,
+  "homepage": "https://somphol.github.io/tokyo-miniature/",
+  "lang": "TypeScript",
+  "pushed": "2026-11-13",
+  "image": "img/tokyo-miniature.jpg",
+  "py": 1400
+ },
+ {
+  "id": "youtube-second-brain",
+  "name": "YouTube Second Brain",
+  "desc": "A private, local-first 3D map of your own YouTube library. Import links or Google Takeout history; built for 100,000 videos. No account, no upload, no seeded corpus.",
+  "tags": [
+   "Studio"
+  ],
+  "github": "https://github.com/somphol/youtube-second-brain",
+  "demo": "https://somphol.github.io/youtube-second-brain/",
+  "demoLive": true,
+  "homepage": "https://somphol.github.io/youtube-second-brain/",
+  "lang": "HTML",
+  "pushed": "2026-11-13",
+  "image": "img/youtube-second-brain.jpg",
+  "py": 1440
+ },
+ {
+  "id": "youtube-second-brain-skill",
+  "name": "YouTube Second Brain — Skill",
+  "desc": "OpenCode skill + working template: a private, local-first 3D YouTube library with Takeout import, IndexedDB storage, virtualized lists and 100k capacity.",
+  "tags": [
+   "Studio"
+  ],
+  "github": "https://github.com/somphol/youtube-second-brain-skill",
+  "demo": "https://github.com/somphol/youtube-second-brain/",
+  "demoLive": true,
+  "homepage": "https://github.com/somphol/youtube-second-brain",
+  "lang": "HTML",
+  "pushed": "2026-11-13",
+  "image": "img/youtube-second-brain-skill.jpg"
+ },
+ {
   "id": "i-have-adhd-demo",
   "name": "i-have-adhd Demo",
   "desc": "Nine coding requests answered with and without the i-have-adhd output skill — side-by-side demo.",

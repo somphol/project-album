@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1600px; height: 1000px; overflow: hidden; }
+  body {
+    background: radial-gradient(120% 90% at 15% 0%, #2a1b3d 0%, #12101c 52%, #08080c 100%);
+    color: #f0ecf8;
+    font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
+    padding: 68px 76px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .row { display: flex; align-items: center; gap: 58px; }
+  img { width: 330px; height: 330px; border-radius: 72px; box-shadow: 0 34px 70px rgba(0,0,0,.55); }
+  h1 { font-size: 84px; letter-spacing: -0.03em; font-weight: 680; }
+  p.tag { margin-top: 14px; font-size: 26px; color: #b9aecb; letter-spacing: .01em; }
+  ul { margin-top: 42px; display: grid; gap: 15px; font-size: 21px; color: #d6cfe4; }
+  li { list-style: none; padding-left: 30px; position: relative; }
+  li::before { content: "›"; position: absolute; left: 6px; color: #b58cff; font-weight: 700; }
+  .foot { margin-top: 54px; font-size: 17px; letter-spacing: .16em; text-transform: uppercase; color: #8d82a3; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <img src="../../tubeshelf/Support/AppIcon.iconset/icon_512x512.png" alt="">
+    <div>
+      <h1>TubeShelf</h1>
+      <p class="tag">A Mac app for the YouTube videos you mean to find again.</p>
+      <ul>
+        <li>Paste a link — real title and thumbnail, on-device categories</li>
+        <li>Browse the shelf by category, channel or search</li>
+        <li>Present any category as a click-through slide deck</li>
+        <li>One JSON file on this Mac · no account, no server</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot">macOS · SwiftUI · Apple on-device model</div>
+</body>
+</html>
