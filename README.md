@@ -16,6 +16,8 @@ Single-file HTML plus the `img/` folder; works offline, no server needed.
 | Key | Action |
 | --- | --- |
 | `←` `→` | previous / next project |
+| Wheel / trackpad | previous / next project (slides mode) |
+| `Home` `End` | first / last project |
 | `G` | toggle slides ↔ grid |
 | `F` | fullscreen |
 | `Space` | autoplay (5.2s per slide) |

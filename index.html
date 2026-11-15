@@ -295,10 +295,26 @@ addEventListener('keydown', (e) => {
   if (e.target.tagName === 'INPUT') return;
   if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); go(1); }
   if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1); }
+  if (mode === 'slides' && e.key === 'Home') { e.preventDefault(); jump(0); }
+  if (mode === 'slides' && e.key === 'End') { e.preventDefault(); jump(PROJECTS.length - 1); }
   if (e.key.toLowerCase() === 'g') setMode(mode === 'grid' ? 'slides' : 'grid');
   if (e.key.toLowerCase() === 'f') $('full').click();
   if (e.key === ' ') { e.preventDefault(); toggleAuto(); }
 });
+
+/* wheel: one slide per gesture, throttled so a trackpad flick does not skip */
+let wheelLock = 0, wheelAcc = 0;
+addEventListener('wheel', (e) => {
+  if (mode !== 'slides' || e.ctrlKey || e.metaKey) return;
+  const now = Date.now();
+  if (now < wheelLock) { e.preventDefault(); return; }
+  wheelAcc += e.deltaY;
+  if (Math.abs(wheelAcc) < 40) return;
+  e.preventDefault();
+  go(wheelAcc > 0 ? 1 : -1);
+  wheelAcc = 0;
+  wheelLock = now + 420;
+}, { passive: false });
 
 /* swipe */
 let sx = null;

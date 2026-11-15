@@ -70,6 +70,9 @@ its usual location inside `~/Projects`.
   object studies and `Health` covers the `platewise-*` pair; new categories appear automatically in
   the filter bar.
 - Images are committed. Regenerating them changes binary diffs; that is expected and fine.
+- **Wheel navigation is slides-only and throttled.** `template.html` advances one slide per gesture
+  after 40px of `deltaY`, then locks for 420ms, and does nothing in grid mode (the grid scrolls).
+  `Home`/`End` jump to the first/last project in slides mode and stay native in grid mode.
 
 ## Known issues
 
