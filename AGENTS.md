@@ -73,6 +73,11 @@ its usual location inside `~/Projects`.
 - **Wheel navigation is slides-only and throttled.** `template.html` advances one slide per gesture
   after 40px of `deltaY`, then locks for 420ms, and does nothing in grid mode (the grid scrolls).
   `Home`/`End` jump to the first/last project in slides mode and stay native in grid mode.
+- **Native apps use author-supplied screenshots.** `tubeshelf`, `image-annotator` and
+  `tubeshelf-web-ro` pin `@assets/*.png` captures of the real UI; an app icon or a headless capture of
+  an upload-gated page reads as a placeholder. The desktop screenshots include window chrome on
+  purpose — they show the product, not a marketing card. `tubeshelf-web-rw` still uses a headless
+  capture because its page shows an empty upload state before a backup is loaded.
 
 ## Known issues
 

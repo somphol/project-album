@@ -86,8 +86,11 @@ const IMG_OVERRIDE = {
   'flinders-street-miniature': 'screenshots/overview-day.png',
   'tokyo-miniature': 'docs/tokyo-day.png',
   'youtube-second-brain': 'screenshots/desktop-library.jpg',
-  // a native Mac app with no web build and no screenshots; curated icon sheet
-  'tubeshelf': '@assets/tubeshelf.png',
+  // native Mac apps with no web build: real app screenshots supplied by the author
+  'tubeshelf': '@assets/tubeshelf-app.png',
+  'image-annotator': '@assets/image-annotator-app.png',
+  // the reader labels itself READ-ONLY; author-supplied screenshot of a loaded backup
+  'tubeshelf-web-ro': '@assets/tubeshelf-web-ro.png',
 };
 
 // Repos whose local images show something else (a deck reuses app shots), so the
